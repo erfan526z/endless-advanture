@@ -116,7 +116,6 @@ The game doesn't have a story, you just need to survive. Gather food from bushes
 - learnopengl.com
 - Every single individual or complany whom contributed to libraries used in the project.
 - Notch (Creator of a masterpiece called Minecraft)
-- stb_image.h
 
 ## Licence 
 
