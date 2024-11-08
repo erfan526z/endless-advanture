@@ -1,79 +1,65 @@
 # Endless Advanture
 
-## What is this?
+## Overview
 
-This is a simple voxel game inspired by Minecraft which has basic elements like block breaking and placement, crafting, storages, and infinite terrain generation. At top of these features, it also has a weather and season system which makes the game environment more dynamic.
+Endless Advanture is a simple voxel game inspired by Minecraft, featuring block breaking and placement, crafting, storages, infinite terrain generation, and a dynamic weather and season system. Created for learning purposes. This project is not actively developed but will receive occasional updates.
 
-## Before going further
+## Features
+- Infinite terrain generation
+- Block breaking and placement
+- Crafting system
+- Storages
+- Weather and season system
+- Dynamic blocks based on season and temperature
+- User management
 
-__This project is done just for learning purposes and I didn't have the time for cleaning the code and documenting.__
+## Getting Started
 
-As I was still learning to work with OpenGL and first C++ project which is more than 5k lines of code, the code is messy and probably contains a lot of bugs and stuff. So, keep that in mind.
-
-Also I don't have plans to go any further in this project so this is the first and probably the last version. Maybe I created a more organized project as a new repo and continue on that with more features and better documentation.
-
-## How to run
-
-The game is compiled and ran successfully in Ubuntu 22.04.3 LTS but it might run on other platforms by some little changes.
+### Requirements
+The game is tested on _Ubuntu 22.04.3 LTS_ and _Microsoft Windows 10_, but it should work with other Linux distros like Ubuntu and other versions of Windows, but keep these requirements in mind:
+- OpenGL 3.3+
+- 64-bit operating system
 
 ### Dependencies
-
-_This section might get updated_
-
-Libraries used:
-- glfw and glad: used for handling OpenGL.
-- glm: used for maths.
-- FastNoiseLight: terrain generation
-- Sqlite: user information (I didn't like to use a database like that, it's just for practice :D)
-- stb_image: used for loading textures
-
+Source files of libraries are embeded to the project, the only thing that is needed to be installed is GLFW libraries
+- **Ubuntu**: Run these commands to get the libraries
 ```bash
 sudo apt-get update
+sudo apt-get install libglfw3 libglfw3-dev
 ```
+- **Windows** (Using MinGW): Head to _https://www.glfw.org/download_ and in the "Windows pre-compiled binaries" section, grab the 64-bit binaries (the version used in project is currently 3.4). Then extract the files and add files inside _lib-mingw-w64_ folder to your MinGW libraries.
+ 
+### Libraries used
+- [GLFW](https://www.glfw.org/) and GLAD (Handling OpenGL) 
+- [GLM](https://github.com/g-truc/glm) (Maths)
+- [FastNoiseLite](https://github.com/Auburn/FastNoiseLite) (Terrain Generation)
+- [SQLite](https://www.sqlite.org/) (User Management)
+- [stb_image](https://github.com/nothings/stb) (Loading Textures)
 
-Installing dependecies:
+### Compiling On Ubuntu
+
+When you have downloaded the files, open the terminal in the folder the files are and then follow these steps (Needs gcc, g++, and CMake installed):
 ```bash
-sudo apt-get install libglfw3 libglfw3-dev libglm-dev
+mkdir build
+cd build
+cmake ..
+cmake --build .
 ```
+After that, you should have the executable. Put the _assets_ folder and executable in the same folder and it's done.
 
-If you don't have GNU GCC compiler installed:
-```bash
-sudp apt-install gcc g++
+### Compiling On Windows
+
+When you have downloaded the files, open the command prompt in the folder with files, then follow these steps (Needs MinGW and CMake installed):
 ```
-
-### Get
-
-Clone this repo or download the zip file manualy.
-
-### Compile
-
-There are two _.sh_ bash files
-
-1. compile.sh: This bash file compiles and links the entire project, you need to use this first time you compile.
-
-2. compile-onlygame.sh: This bash file only complies the game source files and uses _glad.o_ and _sqlite3.o_ which were created once by complie.sh, recuding compile time a little.
-
-```bash
-./compile.sh
+mkdir build
+cd build
+cmake -G "MinGW Makefiles" ..
+cmake --build .
 ```
-Or
-```bash
-./compile-onlygame.sh
-```
+And then, you should see the .exe file. Put the _assets_ folder and executable in the same folder and it's done.
+_(Personally I used TDM-GCC as compiler, you can get it here if you want: https://jmeubank.github.io/tdm-gcc/download/ )_
 
-Note: If you get permission denied error when trying to execute bash files you might need to give the executable permission to each of these, this is how:
-```
-chmod +x compile.sh
-chmod +x compile-onlygame.sh
-```
-
-If that was successfull, a file called _Game_ should appear.
-
-### Run & Notes
-
-The Game is executable and can be run via command or just double clicking if you use an OS like Ubuntu.
-
-Some notes:
+### Notes
 
 1. If the game opens but it shows a blank page and closes (or remain open), it probably is because assets are missing. Make sure that assets folder is present and asset files are inside it.
 
@@ -115,22 +101,10 @@ The game doesn't have a story, you just need to survive. Gather food from bushes
 
 - learnopengl.com
 - Every single individual or complany whom contributed to libraries used in the project.
-- Notch (Creator of a masterpiece called Minecraft)
+- Notch (Creator of Minecraft)
 
 ## Licence 
 
 _This is a small project, but anyways :D_
-_This section will get updated to add github links_
 
 This project is using GNU GPLv3, check LICENSE for more information.
-
-Used libraries are listed on Dependencies section.
-These files in the project root folder are from others and not owned by me:
-- glad.c
-- glad.h
-- FastNoiseLite.h
-- sqlite3.c
-- sqlite3.h
-- sqlite3ext.h
-- khrplatform.h
-
