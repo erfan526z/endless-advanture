@@ -1209,13 +1209,13 @@ void deleteBlockInventory(unsigned int bl, int x, int y, int z, unsigned int wor
 		int oz = z - cz * 16;
 		sprintf(datathing, "%08x%08x%01x%01x%04x.bin", cx, cz, ox, oz, y);
 		createWorldDataPath(path, 256, world_id, datathing);
-		if (std::remove(path)); // else, the file isn't there so it's fine
+		if (std::remove(path))
+			; // else, the file isn't there so it's fine
 	}
 }
 
 void game_core()
 {
-	SettingsFile settings = SettingsFile(DATA_DIR_PATH);
 
 	// Renderer setup
 	Renderer game_renderer;

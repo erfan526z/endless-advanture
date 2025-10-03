@@ -55,7 +55,11 @@ public:
 
 	void destroy() {
 		active = false;
+		chunk_thread::lockThread();
 		saveAndStop();
+		chunk_thread::unlockThread();
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		chunk_thread::processGLRequests();
 		terrainCalculationThread->join();
 		
 		delete terrainCalculationThread;
@@ -234,6 +238,8 @@ public:
 
 			chunk_list[index].updateVRAM();
 		}
+
+		chunk_thread::processGLRequests();
 	}
 
 	// Processing block ticks for blocks affected by time and environment.

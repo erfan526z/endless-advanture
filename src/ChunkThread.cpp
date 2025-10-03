@@ -4,12 +4,15 @@
 #include "ChunkDataFile.h"
 #include "ChunkThread.h"
 #include "ChunkGenerator.h"
+#include "Queue.h"
 
 Queue<Chunk*>* load_queue;
 Queue<Chunk*>* save_queue;
 Queue<Chunk*>* mesh_queue;
+Queue<chunkValuesGL>* glcall_queue;
 
 bool active = false;
+bool lock = false;
 
 void loadOrGenerate(Chunk* chunk);
 
@@ -26,10 +29,16 @@ int chunkManagerThread()
 	load_queue = new Queue<Chunk*>;
 	save_queue = new Queue<Chunk*>;
 	mesh_queue = new Queue<Chunk*>;
+	glcall_queue = new Queue<chunkValuesGL>;
 
 	active = true;
 	
 	while (active) {
+
+		if(lock) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(20));
+			continue;
+		}
 
 		bool action_done = false;
 
@@ -50,6 +59,9 @@ int chunkManagerThread()
 		if (!save_queue->isEmpty()) {
 			Chunk* chunk;
 			save_queue->dequeue(chunk);
+			chunkValuesGL cvgl;
+			if(chunk->getGLInfo(cvgl.vbo, cvgl.vao))
+				glcall_queue->enqueue(cvgl);
 			saveAndFreeChunk(chunk);
 			action_done = true;
 		}
@@ -57,9 +69,19 @@ int chunkManagerThread()
 		if (!action_done) std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	}
 
+	while(lock);
+
 	while (!save_queue->isEmpty()) {
+		if(lock) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(20));
+			continue;
+		}
+
 		Chunk* chunk;
 		save_queue->dequeue(chunk);
+		chunkValuesGL cvgl;
+			if(chunk->getGLInfo(cvgl.vbo, cvgl.vao))
+				glcall_queue->enqueue(cvgl);
 		saveAndFreeChunk(chunk);
 	}
 
@@ -69,6 +91,13 @@ int chunkManagerThread()
 	save_queue = nullptr;
 	delete mesh_queue;
 	mesh_queue = nullptr;
+
+	while(!glcall_queue->isEmpty()) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));
+	}
+
+	delete glcall_queue;
+	glcall_queue = nullptr;
 
 	return 0;
 }
@@ -191,6 +220,25 @@ void chunk_thread::saveAndKill(Chunk* chunklist, int len)
 bool chunk_thread::isInitialized()
 {
 	return active;
+}
+
+void chunk_thread::lockThread() {
+	lock = true;
+}
+
+void chunk_thread::unlockThread() {
+	lock = false;
+}
+
+void chunk_thread::processGLRequests() {
+	lock = true;
+	while(!glcall_queue->isEmpty()) {
+		chunkValuesGL cvgl;
+		glcall_queue->dequeue(cvgl);
+		glDeleteVertexArrays(1, &(cvgl.vao));
+		glDeleteBuffers(1, &(cvgl.vbo));
+	}
+	lock = false;
 }
 
 void loadOrGenerate(Chunk* chunk)
