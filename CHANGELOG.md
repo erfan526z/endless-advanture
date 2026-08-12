@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.2] - Live
+### Bug Fixes
+- Terrain mesh memory leak finally fixed
+
 ## [0.1.1] - 2024-07-10
 ### Changes
 - Project now uses CMake

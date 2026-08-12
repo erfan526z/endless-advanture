@@ -16,6 +16,11 @@ chunk_thread::initManagerThread, chunk_thread::enqueueLoadRequest, chunk_thread:
 */
 int chunkManagerThread();
 
+struct chunkValuesGL {
+	unsigned int vao;
+	unsigned int vbo;
+};
+
 namespace chunk_thread
 {
 	/* Before running the thread, you may initialize the world name and the world save directory address using this function.
@@ -44,4 +49,9 @@ namespace chunk_thread
 	/* Checks if the thread is ready for requests. */
 	bool isInitialized();
 
+	void lockThread();
+
+	void unlockThread();
+
+	void processGLRequests();
 }

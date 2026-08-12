@@ -20,6 +20,10 @@ public:
 	}
 
 	void wipe() {
+		this->wipe(false);
+	}
+
+	void wipe(bool delmesh) {
 		if (data_load_requested) {
 			return;
 		}
@@ -52,7 +56,8 @@ public:
 		heights = nullptr;
 		verticalPiecesSize = nullptr;
 		light_heights = nullptr;
-		deleteMesh();
+		if(delmesh)
+			deleteMesh();
 		deleteData();
 		data_modified = unload_requested = data_load_requested = mesh_update_requested = new_mesh_ready = false;
 		chunk_x = chunk_z = vbo_length = max_height = 0;
@@ -240,6 +245,13 @@ public:
 	bool getRenderInfo(int& vbo_len, unsigned int& vao) {
 		if (!mesh_available) return false;
 		vbo_len = vbo_length;
+		vao = this->vao;
+		return true;
+	}
+
+	bool getGLInfo(unsigned int& vbo, unsigned int& vao) {
+		if (!mesh_available) return false;
+		vbo = this->vbo;
 		vao = this->vao;
 		return true;
 	}

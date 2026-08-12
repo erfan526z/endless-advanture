@@ -103,8 +103,8 @@ The game doesn't have a story, you just need to survive. Gather food from bushes
 - Every single individual or complany whom contributed to libraries used in the project.
 - Notch (Creator of Minecraft)
 
-## Licence 
+## License
 
 _This is a small project, but anyways :D_
 
-This project is using GNU GPLv3, check LICENSE for more information.
+This project is licensed under the MIT License, check LICENSE for more information.
